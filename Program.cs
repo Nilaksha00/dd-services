@@ -61,4 +61,23 @@ app.MapPost("/api/products/add", async (ProductService productService, Product p
     return Results.Ok();
 });
 
+app.MapGet("/api/products/{id}", async (ProductService productService, string id) =>
+{
+    var product = await productService.GetProductById(id);
+    return product;
+});
+
+app.MapDelete("/api/products/{id}", async (ProductService productService, string id) =>
+{
+    await productService.DeleteProductById(id);
+    return Results.Ok();
+});
+
+app.MapPut("/api/products/{id}", async (ProductService productService, string id, Product updatedProduct) =>
+{
+    await productService.UpdateProductById(id, updatedProduct);
+    return Results.Ok();
+});
+
+
 app.Run();

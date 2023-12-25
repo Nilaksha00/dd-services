@@ -22,7 +22,20 @@ namespace DDServices.Services
         public async Task CreateProduct(Product newProduct)  {
             newProduct.productID = Guid.NewGuid().ToString("N");
             await _product.InsertOneAsync(newProduct);
-    }
+        }
+
+        public async Task<Product> GetProductById(string? id) =>
+            await _product.Find(m => m.productID == id).FirstOrDefaultAsync();
+
+        public async Task DeleteProductById(string? id)
+        {
+            await _product.DeleteOneAsync(m => m.productID == id);
+        }
+
+        public async Task UpdateProductById(string? id, Product updatedProduct)
+        {
+            await _product.ReplaceOneAsync(m => m.productID == id, updatedProduct);
+        }
 
     }
 }
