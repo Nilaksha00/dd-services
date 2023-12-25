@@ -16,6 +16,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddSingleton<AuthService>();
+builder.Services.AddSingleton<ProductService>();
 
 var app = builder.Build();
 
@@ -47,5 +48,17 @@ app.MapPost("/api/register", async ( User user, AuthService authService) =>
     return Results.Ok();
 });
 
+
+app.MapGet("/api/products", async (ProductService productService) =>
+{
+    var products = await productService.GetProductList();
+    return products;
+});
+
+app.MapPost("/api/products/add", async (ProductService productService, Product product) =>
+{
+    await productService.CreateProduct(product);
+    return Results.Ok();
+});
 
 app.Run();
