@@ -17,6 +17,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<AuthService>();
 builder.Services.AddSingleton<ProductService>();
+builder.Services.AddSingleton<OrderService>();
+builder.Services.AddSingleton<StockService>();
+builder.Services.AddSingleton<OutletService>();
 
 var app = builder.Build();
 
@@ -77,6 +80,63 @@ app.MapPut("/api/products/{id}", async (ProductService productService, string id
 {
     await productService.UpdateProductById(id, updatedProduct);
     return Results.Ok();
+});
+
+// Add Order API Routes
+app.MapGet("/api/orders", async (OrderService orderService) =>
+{
+    var orders = await orderService.GetOrderList();
+    return orders;
+});
+
+app.MapPost("/api/orders/add", async (OrderService orderService, Order order) =>
+{
+    await orderService.CreateOrder(order);
+    return Results.Ok();
+});
+
+app.MapPut("/api/orders/{id}", async (OrderService orderService, String id, Order order) =>
+{
+    await orderService.UpdateOrder(id, order);
+    return Results.Ok();
+});
+
+app.MapGet("/api/orders/{id}", async (OrderService orderService, string id) =>
+{
+    var order = await orderService.GetOrderById(id);
+    return order;
+});
+
+app.MapDelete("/api/orders/{id}", async (OrderService orderService, string id) =>
+{
+    await orderService.DeleteOrderById(id);
+    return Results.Ok();
+});
+
+// Add Stock API Routes
+app.MapGet("/api/stock/{outletId}", async (StockService stockService, string outletId) =>
+{
+    var stockList = await stockService.GetStockListByOutletId(outletId);
+    return stockList;
+});
+
+app.MapPut("/api/stock/{outletId}/{productId}/{newStockLevel}", async (StockService stockService, string outletId, string productId, int newStockLevel) =>
+{
+    await stockService.UpdateStock(outletId, productId, newStockLevel);
+    return Results.Ok();
+});
+
+// Add Outlet API Routes
+app.MapGet("/api/outlets", async (OutletService outletService) =>
+{
+    var outlets = await outletService.GetOutletList();
+    return outlets;
+});
+
+app.MapGet("/api/outlets/{outletId}", async (OutletService outletService, string outletId) =>
+{
+    var outlet = await outletService.GetOutletById(outletId);
+    return outlet;
 });
 
 

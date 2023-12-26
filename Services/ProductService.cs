@@ -34,6 +34,7 @@ namespace DDServices.Services
 
         public async Task UpdateProductById(string? id, Product updatedProduct)
         {
+            updatedProduct.productID = id;
             await _product.ReplaceOneAsync(m => m.productID == id, updatedProduct);
         }
 
