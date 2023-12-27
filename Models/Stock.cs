@@ -3,8 +3,13 @@
 public class Stock
 {
     [BsonId]
-    public string StockID {  get; set; }
-    public string OutletID { get; set; }
-    public string ProductID { get; set; }
-    public int StockLevel { get; set; }
+    public string stockID {  get; set; }
+    public string outletID { get; set; }
+    public string productID { get; set; }
+    public string productName { get; set; }
+    public string productCategory { get; set; }
+    public string productSize { get; set; }
+    public string productBuyingPrice { get; set; }
+    public string productSellingPrice { get; set; }
+    public int quantity { get; set; }
 }

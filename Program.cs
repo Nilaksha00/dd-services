@@ -120,6 +120,12 @@ app.MapGet("/api/stock/{outletId}", async (StockService stockService, string out
     return stockList;
 });
 
+app.MapPost("/api/stock/{outletID}", async (StockService stockService, Stock newStock) =>
+{
+    await stockService.CreateStock(newStock);
+    return Results.Ok();
+});
+
 app.MapPut("/api/stock/{outletId}/{productId}/{newStockLevel}", async (StockService stockService, string outletId, string productId, int newStockLevel) =>
 {
     await stockService.UpdateStock(outletId, productId, newStockLevel);

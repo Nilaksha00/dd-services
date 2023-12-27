@@ -16,14 +16,18 @@ namespace DDServices.Services
         }
 
         public async Task<List<Stock>> GetStockListByOutletId(string outletId) =>
-            await _stock.Find(s => s.OutletID == outletId).ToListAsync();
+            await _stock.Find(s => s.outletID == outletId).ToListAsync();
 
-
+        public async Task CreateStock(Stock newStock)
+        {
+            newStock.stockID = Guid.NewGuid().ToString("N");
+            await _stock.InsertOneAsync(newStock);
+        }
 
         public async Task UpdateStock(string outletId, string productId, int newStockLevel)
         {
-            var filter = Builders<Stock>.Filter.Eq(s => s.OutletID, outletId) & Builders<Stock>.Filter.Eq(s => s.ProductID, productId);
-            var update = Builders<Stock>.Update.Set(s => s.StockLevel, newStockLevel);
+            var filter = Builders<Stock>.Filter.Eq(s => s.outletID, outletId) & Builders<Stock>.Filter.Eq(s => s.productID, productId);
+            var update = Builders<Stock>.Update.Set(s => s.quantity, newStockLevel);
             await _stock.UpdateOneAsync(filter, update);
         }
 
